@@ -45,12 +45,12 @@ class StoryTest(unittest.TestCase):
   def testFromXmlA(self):
     s = pytracker.Story.FromXml(self.STORY_A)
     self.assertEquals(129150, s.GetStoryId())
-    self.assertEquals("release", s.GetStoryType())
-    self.assertEquals("http://tracker/story/show/129150", s.GetUrl())
-    self.assertEquals("unstarted", s.GetCurrentState())
-    self.assertEquals("", s.GetDescription())
-    self.assertEquals("Gorbachev", s.GetRequestedBy())
-    self.assertEquals("Stalin", s.GetOwnedBy())
+    self.assertEquals('release', s.GetStoryType())
+    self.assertEquals('http://tracker/story/show/129150', s.GetUrl())
+    self.assertEquals('unstarted', s.GetCurrentState())
+    self.assertEquals('', s.GetDescription())
+    self.assertEquals('Gorbachev', s.GetRequestedBy())
+    self.assertEquals('Stalin', s.GetOwnedBy())
     self.assertEquals(1239929270, s.GetCreatedAt())
     self.assertEquals(1242932400, s.GetDeadline())
     self.assertEquals(5, s.GetIteration())
@@ -76,12 +76,12 @@ class StoryTest(unittest.TestCase):
   def testFromXmlB(self):
     s = pytracker.Story.FromXml(self.STORY_B)
     self.assertEquals(129150, s.GetStoryId())
-    self.assertEquals("release", s.GetStoryType())
-    self.assertEquals("http://tracker/story/show/129150", s.GetUrl())
-    self.assertEquals("unstarted", s.GetCurrentState())
+    self.assertEquals('release', s.GetStoryType())
+    self.assertEquals('http://tracker/story/show/129150', s.GetUrl())
+    self.assertEquals('unstarted', s.GetCurrentState())
     # missing fields default to None, but distinguished from empty string!
     self.assertEquals(None, s.GetDescription())
-    self.assertEquals("Gorbachev", s.GetRequestedBy())
+    self.assertEquals('Gorbachev', s.GetRequestedBy())
     self.assertEquals(None, s.GetOwnedBy())
     self.assertEquals(1239929270, s.GetCreatedAt())
     self.assertEquals(1242932400, s.GetDeadline())
@@ -112,41 +112,42 @@ class StoryTest(unittest.TestCase):
   def testFromXmlC(self):
     s = pytracker.Story.FromXml(self.STORY_C)
     self.assertEquals(1234, s.GetStoryId())
-    self.assertEquals("bug", s.GetStoryType())
-    self.assertEquals("http://www.pivotaltracker.com/story/show/1234", s.GetUrl())
-    self.assertEquals("started", s.GetCurrentState())
-    self.assertEquals("Now, Scotty!", s.GetDescription())
-    self.assertEquals("More power to shields", s.GetName())
-    self.assertEquals("James Kirk", s.GetRequestedBy())
-    self.assertEquals("Montgomery Scott", s.GetOwnedBy())
+    self.assertEquals('bug', s.GetStoryType())
+    self.assertEquals('http://www.pivotaltracker.com/story/show/1234',
+                      s.GetUrl())
+    self.assertEquals('started', s.GetCurrentState())
+    self.assertEquals('Now, Scotty!', s.GetDescription())
+    self.assertEquals('More power to shields', s.GetName())
+    self.assertEquals('James Kirk', s.GetRequestedBy())
+    self.assertEquals('Montgomery Scott', s.GetOwnedBy())
     self.assertEquals(1228867200, s.GetCreatedAt())
     self.assertEquals(None, s.GetDeadline())
     self.assertEquals(3, s.GetIteration())
-    self.assertEquals("label 1,label 2,label 3", s.GetLabelsAsString())
+    self.assertEquals('label 1,label 2,label 3', s.GetLabelsAsString())
 
   def testAddLabels(self):
     s = pytracker.Story.FromXml(self.STORY_A)
-    self.assertEquals(None, s.GetLabelsAsString()) # no labels initially
-    s.AddLabel("bbq")
-    self.assertEquals("bbq", s.GetLabelsAsString())
-    s.AddLabel("alpha")
-    self.assertEquals("alpha,bbq", s.GetLabelsAsString())
+    self.assertEquals(None, s.GetLabelsAsString())  # no labels initially
+    s.AddLabel('bbq')
+    self.assertEquals('bbq', s.GetLabelsAsString())
+    s.AddLabel('alpha')
+    self.assertEquals('alpha,bbq', s.GetLabelsAsString())
 
   def testAddRemoveLabels(self):
     s = pytracker.Story.FromXml(self.STORY_C)
-    self.assertEquals("label 1,label 2,label 3", s.GetLabelsAsString())
-    s.RemoveLabel("label 1")
-    self.assertEquals("label 2,label 3", s.GetLabelsAsString())
-    s.AddLabel("label 1")
-    self.assertEquals("label 1,label 2,label 3", s.GetLabelsAsString())
-    s.RemoveLabel("label 1")
-    self.assertEquals("label 2,label 3", s.GetLabelsAsString())
-    s.RemoveLabel("label 2")
-    self.assertEquals("label 3", s.GetLabelsAsString())
-    s.RemoveLabel("label 3")
-    self.assertEquals("", s.GetLabelsAsString())
-    s.RemoveLabel("label 4") # removing nonexistant labels is OK!
-    self.assertEquals("", s.GetLabelsAsString())
+    self.assertEquals('label 1,label 2,label 3', s.GetLabelsAsString())
+    s.RemoveLabel('label 1')
+    self.assertEquals('label 2,label 3', s.GetLabelsAsString())
+    s.AddLabel('label 1')
+    self.assertEquals('label 1,label 2,label 3', s.GetLabelsAsString())
+    s.RemoveLabel('label 1')
+    self.assertEquals('label 2,label 3', s.GetLabelsAsString())
+    s.RemoveLabel('label 2')
+    self.assertEquals('label 3', s.GetLabelsAsString())
+    s.RemoveLabel('label 3')
+    self.assertEquals('', s.GetLabelsAsString())
+    s.RemoveLabel('label 4')  # removing nonexistant labels is OK!
+    self.assertEquals('', s.GetLabelsAsString())
 
   EMPTY_STORY = """<?xml version="1.0" encoding="utf-8"?><story/>"""
 
@@ -154,12 +155,12 @@ class StoryTest(unittest.TestCase):
     s = pytracker.Story()
     self.assertEquals(self.EMPTY_STORY, s.ToXml())
 
-    s.AddLabel("red")
+    s.AddLabel('red')
     self.assertEquals(
         """<?xml version="1.0" encoding="utf-8"?><story>"""
         """<labels>red</labels></story>""", s.ToXml())
 
-    s.AddLabel("green")
+    s.AddLabel('green')
     self.assertEquals(
         """<?xml version="1.0" encoding="utf-8"?><story>"""
         """<labels>green,red</labels></story>""", s.ToXml())

@@ -103,10 +103,12 @@ class Tracker(object):
     return self._ApiQueryStories('type:release')
 
   def GetStories(self, filt=None):
-    """Returns a list of all Stories that satisfy optional filt.
+    """Fetch all Stories that satisfy the filter.
 
     Args:
       filt: a Tracker search filter.
+    Returns:
+      List of Story().
     """
     stories = self._ApiQueryStories(filt)
     parsed = xml.dom.minidom.parseString(stories)
@@ -140,6 +142,8 @@ class Tracker(object):
     Args:
       story_id: The ID of the story to mutate
       story: The Story containing values to change.
+    Returns:
+      The updated Story().
     """
     story_xml = story.ToXml()
     res = self._Api('stories/%d' % story_id, 'PUT', story_xml)
@@ -151,7 +155,10 @@ class Tracker(object):
     Use this method if you have a full Story object created by one of the query
     methods.
 
-    Returns the updated Story.
+    Args:
+      story: a Story()
+    Returns:
+      The updated Story().
     """
     story_xml = story.ToXml()
     res = self._Api('stories/%d' % story.GetStoryId(), 'PUT', story_xml)
@@ -270,6 +277,8 @@ class Story(object):
 
     Args:
       as_xml: a full XML document from the Tracker API.
+    Returns:
+      Story()
     """
     parsed = minidom.parseString(as_xml)
     story = Story()
@@ -297,8 +306,15 @@ class Story(object):
 
   @staticmethod
   def _GetDataFromTag(dom, tag):
-    """Returns None (if tag doesn't exist), empty string (if
-    tag exists, but body is empty), or the tag body.
+    """Retrieve value associated with the tag, if any.
+
+    Args:
+      dom: XML DOM object
+      tag: name of the desired tag
+
+    Returns:
+      None (if tag doesn't exist), empty string (if tag exists, but body is
+      empty), or the tag body.
     """
     tags = dom.getElementsByTagName(tag)
     if not tags:
@@ -403,9 +419,7 @@ class Story(object):
         pass
 
   def AddLabelsFromString(self, labels):
-    """Adds a set of labels (see caveat in class comment) from a
-    comma-delimited string.
-    """
+    """Adds a set of labels from a comma-delimited string (see class caveat)."""
     if self.labels is None:
       self.labels = set()
 
@@ -441,7 +455,7 @@ class Story(object):
 
     # Dates are special
     if self.deadline:
-      formatted = time.strftime("%Y/%m/%d %H:%M:%S UTC",
+      formatted = time.strftime('%Y/%m/%d %H:%M:%S UTC',
                                 time.gmtime(self.deadline))
       deadline_tag = doc.createElement('deadline')
       deadline_tag.setAttribute('type', 'datetime')
