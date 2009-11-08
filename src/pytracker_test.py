@@ -171,6 +171,27 @@ class StoryTest(unittest.TestCase):
         """<estimate>3</estimate><labels>green,red</labels></story>""",
         s.ToXml())
 
+  def testSetDescription(self):
+    story = pytracker.Story()
+    story.SetDescription('day after day the sun')
+    self.assertEquals('day after day the sun', story.GetDescription())
+    story.SetDescription('')
+    self.assertEquals('', story.GetDescription())
+    self.assertEquals('<?xml version="1.0" encoding="utf-8"?><story><description></description></story>',
+                      story.ToXml())
+
+  def testSetOwnedBy(self):
+    story = pytracker.Story()
+    story.SetOwnedBy('dcoker')
+    self.assertEquals('<?xml version="1.0" encoding="utf-8"?><story><owned_by>dcoker</owned_by></story>',
+                      story.ToXml())
+
+  def testSetReportedBy(self):
+    story = pytracker.Story()
+    story.SetRequestedBy('dcoker')
+    self.assertEquals('<?xml version="1.0" encoding="utf-8"?><story><requested_by>dcoker</requested_by></story>',
+                      story.ToXml())
+
 
 if __name__ == '__main__':
   unittest.main()

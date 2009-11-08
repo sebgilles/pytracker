@@ -80,7 +80,11 @@ class Tracker(object):
       req = urllib2.Request(url, body, headers)
       req.get_method = lambda: method
 
-    res = self.opener.open(req)
+    try:
+      res = self.opener.open(req)
+    except urllib2.HTTPError, e:
+      message = "HTTP Status Code: %s\nMessage: %s\nURL: %s\nError: %s" % (e.code, e.msg, e.geturl(), e.read())
+      raise TrackerApiException(message)
 
     return res.read()
 
@@ -196,6 +200,10 @@ class NoTokensAvailableException(Exception):
   """Raised when HostedTrackerAuth can't find any tokens for this user."""
 
 
+class TrackerApiException(Exception):
+  """Raised when Tracker returns an error."""
+
+
 class HostedTrackerAuth(TrackerAuth):
   """Authentication rules for hosted Tracker instances."""
 
@@ -241,7 +249,7 @@ class Story(object):
 
   # Fields that can be treated as strings when embedding in XML.
   UPDATE_FIELDS = ('story_type', 'current_state', 'name',
-                   'description', 'estimate')
+                   'description', 'estimate', 'requested_by', 'owned_by')
 
   # Type: immutable ints.
   story_id = None
@@ -442,7 +450,7 @@ class Story(object):
     # same way.
     for field_name in self.UPDATE_FIELDS:
       v = getattr(self, field_name)
-      if v:
+      if v is not None:
         new_tag = doc.createElement(field_name)
         new_tag.appendChild(doc.createTextNode(str(v)))
         story.appendChild(new_tag)
