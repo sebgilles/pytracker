@@ -288,7 +288,7 @@ class Story(object):
     Returns:
       Story()
     """
-    parsed = minidom.parseString(as_xml)
+    parsed = minidom.parseString(as_xml.encode('utf-8'))
     story = Story()
     story.story_id = int(parsed.getElementsByTagName('id')[0].firstChild.data)
     story.url = parsed.getElementsByTagName('url')[0].firstChild.data
@@ -452,7 +452,7 @@ class Story(object):
       v = getattr(self, field_name)
       if v is not None:
         new_tag = doc.createElement(field_name)
-        new_tag.appendChild(doc.createTextNode(str(v)))
+        new_tag.appendChild(doc.createTextNode(unicode(v)))
         story.appendChild(new_tag)
 
     # Labels are represented internally as sets.
