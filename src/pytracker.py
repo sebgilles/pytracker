@@ -306,6 +306,10 @@ class Story(object):
     story.SetName(Story._GetDataFromTag(parsed, 'name'))
     story.SetDescription(Story._GetDataFromTag(parsed, 'description'))
     story.SetDeadline(Story._ParseDatetimeIntoSecs(parsed, 'deadline'))
+
+    estimate = Story._GetDataFromTag(parsed, 'estimate')
+    if estimate is not None:
+        story.estimate = estimate
     labels = Story._GetDataFromTag(parsed, 'labels')
     if labels is not None:
       story.AddLabelsFromString(labels)
