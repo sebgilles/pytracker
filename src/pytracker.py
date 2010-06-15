@@ -72,7 +72,7 @@ class Tracker(object):
     if self.token:
       headers['X-TrackerToken'] = self.token
 
-    if not body:
+    if not body and method == 'GET':
       # Do a GET
       req = urllib2.Request(url, None, headers)
     else:
