@@ -1,4 +1,4 @@
-#!/usr/bin/python2.5
+#!/usr/bin/env python
 #
 # Copyright 2009 Google Inc. All Rights Reserved.
 #
@@ -192,6 +192,17 @@ class StoryTest(unittest.TestCase):
     self.assertEquals('<?xml version="1.0" encoding="utf-8"?><story><requested_by>dcoker</requested_by></story>',
                       story.ToXml())
 
+  def testSetDeadline(self):
+    story = pytracker.Story()
+    story.SetDeadline(1290153802.0)
+    self.assertEquals('<?xml version="1.0" encoding="utf-8"?><story><deadline type="datetime">2010/11/19 08:03:22 UTC</deadline></story>',
+                      story.ToXml())
+
+  def testSetCreatedAt(self):
+    story = pytracker.Story()
+    story.SetCreatedAt(1290153802.0)
+    self.assertEquals('<?xml version="1.0" encoding="utf-8"?><story><created_at type="datetime">2010/11/19 08:03:22 UTC</created_at></story>',
+                      story.ToXml())
 
 if __name__ == '__main__':
   unittest.main()

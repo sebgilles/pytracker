@@ -1,4 +1,4 @@
-#!/usr/bin/python2.5
+#!/usr/bin/env python
 #
 # Copyright 2009 Google Inc. All Rights Reserved.
 #
@@ -361,9 +361,6 @@ class Story(object):
   def GetUrl(self):
     return self.url
 
-  def GetCreatedAt(self):
-    return self.created_at
-
   # Mutable fields
   def GetRequestedBy(self):
     return self.requested_by
@@ -413,6 +410,12 @@ class Story(object):
 
   def SetDeadline(self, secs_since_epoch):
     self.deadline = secs_since_epoch
+
+  def GetCreatedAt(self):
+    return self.created_at
+
+  def SetCreatedAt(self, secs_since_epoch):
+    self.created_at = secs_since_epoch
 
   def AddLabel(self, label):
     """Adds a label (see caveat in class comment)."""
@@ -466,12 +469,20 @@ class Story(object):
       story.appendChild(labels_tag)
 
     # Dates are special
+    DATE_FORMAT = '%Y/%m/%d %H:%M:%S UTC'
+
     if self.deadline:
-      formatted = time.strftime('%Y/%m/%d %H:%M:%S UTC',
-                                time.gmtime(self.deadline))
+      formatted = time.strftime(DATE_FORMAT, time.gmtime(self.deadline))
       deadline_tag = doc.createElement('deadline')
       deadline_tag.setAttribute('type', 'datetime')
       deadline_tag.appendChild(doc.createTextNode(formatted))
       story.appendChild(deadline_tag)
+
+    if self.created_at:
+      formatted = time.strftime(DATE_FORMAT, time.gmtime(self.created_at))
+      created_at_tag = doc.createElement('created_at')
+      created_at_tag.setAttribute('type', 'datetime')
+      created_at_tag.appendChild(doc.createTextNode(formatted))
+      story.appendChild(created_at_tag)
 
     return doc.toxml('utf-8')
